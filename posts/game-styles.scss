@@ -1,0 +1,873 @@
+/*-- scss:defaults --*/
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap");
+
+// Palette
+$mahj-hot-pink:   #EE62AF !default;
+$mahj-pink:       #E8A8D3 !default;
+$mahj-light-blue: #F0FEFF !default;
+$mahj-blue:       #0085FF !default;
+$mahj-orange:     #D04C2A !default;
+$mahj-gray-dark:  #333333 !default;
+$mahj-gray-light: #DDDDDD !default;
+
+/*-- scss:rules --*/
+
+/* Base Styles */
+
+
+.container {
+  width: 800px;
+  margin: 0 auto;
+}
+
+
+
+a.game-btn {
+  background: linear-gradient(145deg, #ffd700, #ffed4e);
+  border: none;
+  padding: 12px 24px;
+  font-size: 1.1em;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 5px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transition: all 0.2s ease;
+  text-decoration: none;      
+  display: inline-block;      
+  float: right;
+  color: $mahj-gray-dark;                 
+}
+
+blockquote {
+  border-left: 4px solid $mahj-blue !important;
+  padding-left: 1rem !important;
+  margin: 2rem 0 !important;
+  font-style: italic !important;
+  color: $mahj-gray-dark !important;
+}
+
+
+
+
+/* Buttons */
+.game-btn {
+  background: linear-gradient(145deg, #ffd700, #ffed4e);
+  border: none;
+  padding: 12px 24px;
+  font-size: 1.1em;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 5px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transition: all 0.2s ease;
+}
+
+.game-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+}
+
+.control-btn {
+  background: #007bff;
+  color: white;
+  padding: 10px 24px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  display: block;
+  margin: 15px auto;
+}
+
+.control-btn:hover {
+  background: #0056b3;
+  transform: translateY(-1px);
+}
+
+.math {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 30px auto;
+  background-color: white;   
+  border: 3px solid $mahj-hot-pink;   
+  box-shadow:    
+    0 0 0 2px white,    
+    0 0 0 6px $mahj-blue,     
+    0 10px 15px rgba(0, 0, 0, 0.15);     
+  border-radius: 15px;
+  padding: 20px 10px 10px 10px;
+  color: $mahj-hot-pink;   
+  font-weight: 600;
+  text-align: center;
+  max-width: 200px;
+}
+
+.box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 30px auto;
+  background-color: white;   
+  border: 3px solid $mahj-hot-pink;   
+  box-shadow:    
+    0 0 0 2px white,    
+    0 0 0 6px $mahj-blue,     
+    0 10px 15px rgba(0, 0, 0, 0.15);     
+  border-radius: 15px;
+  padding: 20px 10px 10px 10px;
+}
+
+.instructions {
+  background: rgba(255,255,255,0.9);
+  padding: 15px;
+  border-radius: 10px;
+  margin: 10px 0;
+  border: 2px solid $mahj-blue;
+}
+
+/* Carousel */
+.mahj-carousel {
+  max-width: 800px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 10px;
+  border: 3px solid $mahj-hot-pink;   
+  box-shadow:    
+    0 0 0 2px white,    
+    0 0 0 6px $mahj-blue,     
+    0 10px 15px rgba(0, 0, 0, 0.15);      
+  overflow: hidden; 
+}
+
+.mahj-carousel-inner {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.mahj-carousel-inner::-webkit-scrollbar {
+  display: none;
+}
+
+.mahj-slide {
+  flex: 0 0 100%;
+  padding: 40px;
+  scroll-snap-align: start;
+}
+
+/* Quiz Components */
+.tile-trainer {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  max-width: 700px;
+  margin: 20px auto;
+}
+
+.quiz-container {
+  background: #f8f9fa;
+  border: 2px solid #e9ecef;
+  border-radius: 10px;
+  padding: 25px;
+  margin: 20px 0;
+}
+
+.tile-display {
+  text-align: center;
+  margin: 30px 0;
+}
+
+.tile-image {
+  width: 80px;
+  height: 120px;
+  border: 2px solid #dee2e6;
+  border-radius: 8px;
+  background: white;
+  display: inline-block;
+  margin: 0 10px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.tile-image:hover {
+  transform: scale(1.05);
+  border-color: #007bff;
+  box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+}
+
+.tile-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.tile-symbol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-size: 48px;
+}
+
+.options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.option-btn {
+  padding: 12px 16px;
+  background: #e9ecef;
+  border: 2px solid #dee2e6;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  text-align: center;
+}
+
+.option-btn:hover {
+  background: #dee2e6;
+  transform: translateY(-1px);
+}
+
+.option-btn.correct {
+  background: #d4edda;
+  color: #155724;
+  border-color: #28a745;
+}
+
+.option-btn.incorrect {
+  background: #f8d7da;
+  color: #721c24;
+  border-color: #dc3545;
+}
+
+.feedback {
+  margin: 15px 0;
+  padding: 12px;
+  border-radius: 6px;
+  font-weight: 500;
+  text-align: center;
+  display: none;
+}
+
+.feedback.correct {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #28a745;
+}
+
+.feedback.incorrect {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #dc3545;
+}
+
+.score {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 15px 0;
+  color: #495057;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 6px;
+  background: #e9ecef;
+  border-radius: 3px;
+  margin: 15px 0;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #007bff, #0056b3);
+  transition: width 0.3s ease;
+  border-radius: 3px;
+}
+
+.game-board {
+  width: 800px;
+  height: 600px;
+  margin: 20px auto;
+  position: relative;
+  background: radial-gradient(circle at center, #27ae60 0%, #2d5016 100%);
+  border: 8px solid $mahj-hot-pink;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.table-container {
+  background: #2c3e50;
+  border-radius: 20px;
+  padding: 30px;
+  margin: 20px 0;
+  position: relative;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mahjong-table {
+  width: 100%;
+  max-width: 600px;
+  height: 400px;
+  background: #27ae60;
+  border-radius: 20px;
+  position: relative;
+  border: 8px solid $mahj-hot-pink;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+.tile-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 300px;
+}
+
+/* Wall Areas */
+.wall-area {
+  position: absolute;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.wall-area.left {
+  left: 10px;
+  top: 50px;
+  width: 80px;
+  height: 500px;
+  background: $mahj-pink;
+  border: 2px solid $mahj-hot-pink;
+}
+
+.wall-area.right {
+  right: 10px;
+  top: 50px;
+  width: 80px;
+  height: 500px;
+  background: $mahj-pink;
+  border: 2px solid $mahj-hot-pink;
+}
+
+.wall-area.top {
+  top: 10px;
+  left: 110px;
+  width: 580px;
+  height: 80px;
+  background: $mahj-pink;
+  border: 2px solid $mahj-hot-pink;
+}
+
+.wall-area.bottom {
+  bottom: 10px;
+  left: 110px;
+  width: 580px;
+  height: 80px;
+  background: $mahj-pink;
+  border: 2px solid $mahj-hot-pink;
+}
+
+.wall-area.active {
+  box-shadow: 0 0 20px $mahj-hot-pink;
+}
+
+.wall-area::before {
+  content: attr(data-wall);
+  position: absolute;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.7);
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 0.9em;
+  white-space: nowrap;
+  color: $mahj-gray-light;
+  z-index: 11;
+}
+
+.wall-area.drag-over {
+  background: rgba(255, 215, 0, 0.3);
+  border-color: gold;
+}
+
+.built-wall {
+  background: $mahj-pink;
+  border: 2px solid $mahj-hot-pink;
+}
+
+.player-wall {
+  background: rgba(139, 69, 19, 0.2);
+  border: 2px dashed rgba(255,255,255,0.3);
+}
+
+/* Player Areas */
+.player-area {
+  position: absolute;
+  padding: 10px;
+  background: rgba(255,255,255,0.1);
+  border: 2px dashed rgba(255,255,255,0.5);
+  border-radius: 8px;
+  min-height: 80px;
+  min-width: 80px;
+}
+
+.player-left {
+  left: 140px;
+  top: 180px;
+  width: 80px;
+  height: 240px;
+}
+
+.player-right {
+  right: 140px;
+  top: 180px;
+  width: 80px;
+  height: 240px;
+}
+
+.player-top {
+  top: 110px;
+  left: 280px;
+  width: 240px;
+}
+
+.player-bottom {
+  bottom: 110px;
+  left: 280px;
+  width: 240px;
+}
+
+.player-area::before {
+  content: attr(data-player);
+  width: 80px;
+  position: absolute;
+  top: -20px;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.8);
+  color: white;
+  padding: 1px;
+  border-radius: 3px;
+  font-size: 0.7em;
+  z-index: 100;                    
+}
+
+.player-area.current-player {
+  border-color: #ffd700;
+  background: rgba(255, 215, 0, 0.2);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+}
+
+.player-hand {
+  position: absolute;
+  background: rgba(255,255,255,0.9);
+  border: 3px solid $mahj-hot-pink;
+  border-radius: 10px;
+  padding: 15px;
+}
+
+.player-hand.current {
+  border-color: #ffd700;
+  background: rgba(255, 215, 0, 0.2);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+}
+
+.player-hand.you {
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 750px;
+  height: 120px;
+}
+
+.player-hand.right {
+  right: 20px;
+  top: 40%;
+  transform: translateY(-50%);
+  width: 80px;
+  height: 450px;
+}
+
+.player-hand.across {
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 500px;
+  height: 80px;
+}
+
+#left-tiles .mahjong-tile-play, 
+#right-tiles .mahjong-tile-play {
+    transform: rotate(90deg);
+    margin: -3px 0; 
+}
+
+#your-tiles,
+#right-tiles,
+#across-tiles,
+#left-tiles {
+  touch-action: none;
+}
+
+.player-hand.left {
+  left: 20px;
+  top: 40%;
+  transform: translateY(-50%);
+  width: 80px;
+  height: 450px;
+}
+
+.player-label {
+  position: absolute;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: $mahj-gray-dark;
+  color: white;
+  padding: 5px 15px;
+  border-radius: 15px;
+  font-size: 0.9em;
+  font-weight: 600;
+  z-index: 10;
+}
+
+/* Mahjong Tiles */
+.mahjong-tile {
+  width: 29px;
+  height: 38px;
+  background: linear-gradient(145deg, #f5f5dc, #e6e6e6);
+  border: 1px solid $mahj-hot-pink;
+  border-radius: 2px;
+  position: absolute;
+  cursor: grab;
+  box-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+  transition: transform 200ms cubic-bezier(.25,1.5,.5,1);
+  z-index: 10;
+  display: inline-block;
+  margin: 1px;
+}
+
+.mahjong-tile.snap {
+  transform: scale(1.1);
+}
+
+.mahjong-tile:hover:not(.placed) {
+  transform: scale(1.1);
+  z-index: 100;
+}
+
+.mahjong-tile.dragging {
+  cursor: grabbing;
+  opacity: 0.8;
+  z-index: 1000;
+}
+
+.mahjong-tile.placed {
+  cursor: default;
+  position: relative;
+  display: inline-block;
+  margin: 1px;
+}
+
+.mahjong-tile.available {
+  border: 2px solid $mahj-blue !important;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+}
+
+.mahjong-tile-play {
+  width: 50px;
+  height: 75px;
+  border-radius: 3px;
+  cursor: grab;
+  box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8em;
+  font-weight: bold;
+  position: relative;
+  user-select: none;
+  z-index: 1000;
+  pointer-events: auto !important;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+.tile-image-play {
+  touch-action: manipulation;
+  pointer-events: none;
+  width: 50px;
+  height: 75px;
+  border-radius: 3px;
+  cursor: grab;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8em;
+  font-weight: bold;
+  position: relative;
+  z-index: 1000;
+}
+
+.mahjong-tile-play:hover {
+  transform: scale(1.05);
+  z-index: 100;
+  border-color: $mahj-blue;
+}
+
+.mahjong-tile-play.selected {
+  border-color: #ffd700;
+  background: linear-gradient(145deg, #fff9c4, #ffd700);
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(255, 215, 0, 0.5);
+}
+
+.mahjong-tile-play.dragging {
+  cursor: grabbing;
+  opacity: 0.8;
+  z-index: 1000;
+}
+
+.mahjong-tile-play.other-player {
+  width: 29px;
+  height: 38px;
+  background: linear-gradient(145deg, #f5f5dc, #e6e6e6);
+  border: 1px solid $mahj-hot-pink;
+  border-radius: 2px;
+  position: absolute;
+  cursor: grab;
+  box-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+  transition: all 0.2s ease;
+  margin: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  user-select: none;
+  z-index: 1000;
+}
+
+.tile-cluster {
+  display: inline-block;
+  margin: 2px;
+  vertical-align: top;
+  position: relative;
+  width: 44px;
+  height: 28px;
+}
+
+.tile-cluster.snap {
+  transform: scale(1.1);
+}
+
+.tile-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  max-height: 450px;
+}
+
+/* Dice */
+.dice-area {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  background: rgba(255,255,255,0.9);
+  padding: 20px;
+  border-radius: 10px;
+  border: 2px solid $mahj-hot-pink;
+  z-index: 101;
+}
+
+.dice-area.hidden {
+  display: none;
+}
+
+.dice {
+  width: 40px;
+  height: 40px;
+  background: white;
+  border: 2px solid $mahj-gray-dark;
+  border-radius: 5px;
+  display: inline-block;
+  margin: 5px;
+  line-height: 36px;
+  font-size: 24px;
+  font-weight: bold;
+  z-index: 102;
+}
+
+/* Statistics */
+.stats {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px 0;
+  font-size: 1.1em;
+}
+
+.stat-box {
+  background: rgba(255,255,255,0.1);
+  padding: 15px;
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+  min-width: 120px;
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 1.8em;
+  font-weight: bold;
+  color: $mahj-hot-pink;
+}
+
+/* Markers and Indicators */
+.break-marker {
+  position: absolute;
+  width: 10px;
+  height: 80px;
+  background: red;
+  cursor: pointer;
+  border-radius: 2px;
+  z-index: 2000;
+}
+
+.break-marker:hover {
+  background: darkred;
+  width: 10px;
+}
+
+.hint {
+  font-size: 0.9em;
+  color: #ffd700;
+  margin-top: 10px;
+  font-style: italic;
+}
+
+.pass-counter {
+  background: rgba(0,0,0,0.8);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 20px;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-weight: bold;
+  z-index: 100;
+}
+
+/* Drag and Drop */
+.drop-zone.drag-over {
+  background: rgba(255, 215, 0, 0.3);
+  border-color: gold;
+}
+
+.courtesy-pass {
+  background: rgba(255, 215, 0, 0.9);
+  border: 3px solid $mahj-hot-pink;
+}
+
+/* Information Overlays */
+.charleston-info {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255,255,255,0.95);
+  padding: 20px;
+  border-radius: 15px;
+  border: 3px solid $mahj-hot-pink;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  z-index: 1000;
+  max-width: 400px;
+}
+
+.charleston-info h3 {
+  color: $mahj-hot-pink;
+  margin-top: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.completion-message {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0,0,0,0.9);
+  color: white;
+  padding: 30px;
+  border-radius: 15px;
+  font-size: 1.3em;
+  display: none;
+  z-index: 2000;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.controls {
+  margin: 20px 0;
+}
+
+
+      .current-hand {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 20px 0;
+            padding: 20px;
+            background: white;
+            border: 3px solid #EE62AF;
+            border-radius: 15px;
+        }
+        
+        
+        
+        .pattern-option {
+            margin: 10px 0;
+            padding: 15px;
+            background: white;
+            border: 2px solid #0085FF;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .pattern-option:hover {
+            background: #F0FEFF;
+            transform: translateY(-2px);
+        }
+        
+        .pattern-option.selected {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+        
+        .pattern-option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+        
+        .pattern-option.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+        }
+

@@ -1,0 +1,182 @@
+---
+title: "Get to know the tiles"
+image: "featured.png"
+order: 2 
+---
+
+Click through the flashcards below to learn about the different tiles.
+
+::: mahj-carousel
+
+::: {#carousel .mahj-carousel-inner}
+
+::: mahj-slide
+
+### There are the five types of Mahjong tiles:
+
+1.  Numbers
+2.  Dragons
+3.  Winds
+4.  Flowers
+5.  Jokers
+:::
+
+::: mahj-slide
+
+### Numeric Tiles + Dragons
+
+These tiles come in 3 suits: **Dots** (circles), **Bams** (bamboo), and **Craks** (characters). Think of each suit like a playing-card suit—with a "face card" in the form of a Dragon.
+:::
+
+::: mahj-slide
+### Dots
+
+The **Dot** suit has:
+
+-   Number tiles: **1** through **9**
+    -   4 copies of each → `9 × 4 = 36` tiles\
+-   Paired Dragon: **White Dragon** (often called *soap*)
+    -   4 copies → `4` tiles
+
+<!-- ::: text-center -->
+<!-- ![](tiles/dot-3-a-traditional-set.png){height="75px"} ![](tiles/dot-6-my-fair-mahjong.png){height="75px"} ![](tiles/dot-8-the-mahjong-line.png){height="75px"} -->
+
+<!-- *Example dot tiles from various sets* -->
+<!-- ::: -->
+
+:::
+
+::: mahj-slide
+### Bams
+
+The **Bam** suit has:
+
+-   Number tiles: **1** through **9**
+    -   4 copies of each → `9 × 4 = 36` tiles\
+-   Paired Dragon: **Green Dragon**
+    -   4 copies → `4` tiles
+
+<!-- ::: text-center -->
+<!-- ![](tiles/bam-3-a-traditional-set.png){height="75px"} ![](tiles/bam-6-my-fair-mahjong.png){height="75px"} ![](tiles/bam-8-the-mahjong-line.png){height="75px"} -->
+
+<!-- *Example bam tiles from various sets* -->
+<!-- ::: -->
+
+:::
+
+::: mahj-slide
+### Craks
+
+The **Crak** suit has:
+
+-   Number tiles: **1** through **9**
+    -   4 copies of each → `9 × 4 = 36` tiles\
+-   Paired Dragon: **Red Dragon**
+    -   4 copies → `4` tiles
+
+<!-- ::: text-center -->
+<!-- ![](tiles/crak-3-a-traditional-set.png){height="75px"} ![](tiles/crak-6-my-fair-mahjong.png){height="75px"} ![](tiles/crak-8-the-mahjong-line.png){height="75px"} -->
+
+<!-- *Example crak tiles from various sets* -->
+<!-- ::: -->
+
+:::
+
+::: mahj-slide
+### Winds
+
+The third type of tile is a **Wind**
+
+-   Directions: **East**, **South**, **West**, **North**\
+-   4 copies of each → `4 × 4 = 16` tiles
+
+<!-- ::: text-center -->
+<!-- ![](tiles/wind-north-a-traditional-set.png){height="75px"} ![](tiles/wind-east-my-fair-mahjong.png){height="75px"} ![](tiles/wind-west-the-mahjong-line.png){height="75px"} -->
+
+<!-- *Example wind tiles from various sets* -->
+<!-- ::: -->
+
+:::
+
+::: mahj-slide
+### Flowers
+
+The fourth type of tile is a **Flower**
+
+-   There are 8 Flowers → `8` tiles
+
+<!-- ::: text-center -->
+<!-- ![](tiles/flower-3-a-traditional-set.png){height="75px"} ![](tiles/flower-6-my-fair-mahjong.png){height="75px"} ![](tiles/flower-1-the-mahjong-line.png){height="75px"} -->
+
+<!-- *Example flower tiles from various sets* -->
+<!-- ::: -->
+
+:::
+
+::: mahj-slide
+### Jokers
+
+The final type of tile is a **Joker**
+
+-   Wildcards (can substitute most tiles)\
+-   8 Jokers → `8` tiles
+:::
+
+::: mahj-slide
+### Grand Tile-Count Summary
+
+-   Suited Number Tiles: `108`\
+-   Dragons: `12`\
+-   Winds: `16`\
+-   Flowers: `8`\
+-   Jokers: `8`\
+-   **Total: `152` tiles**
+:::
+:::
+:::
+
+<br>
+
+::: {.nav-buttons .text-center}
+<button class="nav-btn game-btn" onclick="scrollCarousel(-1)">
+
+← Previous
+</button>
+
+<button class="nav-btn game-btn" onclick="scrollCarousel(1)">
+
+Next →
+</button>
+:::
+
+
+<br>
+
+[Next Lesson](/posts/3-wall){.game-btn}
+
+<script>
+let currentSlide = 0;
+const carousel = document.getElementById('carousel');
+const slides = carousel.children;
+const totalSlides = slides.length;
+
+function scrollCarousel(direction) {
+currentSlide += direction;
+
+if (currentSlide < 0) currentSlide = 0;
+if (currentSlide >= totalSlides) currentSlide = totalSlides - 1;
+
+const slideWidth = slides[0].offsetWidth;
+carousel.scrollTo({
+    left: slideWidth * currentSlide,
+    behavior: 'smooth'
+});
+}
+
+
+carousel.addEventListener('scroll', () => {
+    const slideWidth = slides[0].offsetWidth;
+    currentSlide = Math.round(carousel.scrollLeft / slideWidth);
+});
+
+</script>

@@ -1,0 +1,436 @@
+<script src="../../assets/js/MahjongUtils.js"></script>
+<script>
+class MahjongDealingGame {
+    constructor() {
+        this.phase = 1;
+        this.diceTotal = 7;
+        this.tilesDealt = 0;
+        this.currentPlayerIndex = 3;
+        this.playerNames = ['South', 'West', 'North', 'East'];
+        this.playerTileCounts = [0, 0, 0, 0];
+        this.dealingRound = 1;
+        this.wallBroken = false;
+        this.breakPosition = 0;
+        this.currentWallIndex = 3;
+        this.wallTiles = [[], [], [], []];
+        this.dealingStartIndex = 0;
+        this.availableTiles = [];
+        this.tilesInFrontOfDealer = 0;
+        this.initialDealComplete = false;
+        this.finalDealPhase = false;
+        this.leftWallMoved = false; // Track if left wall has been moved
+        
+        // Store bound handlers for event management
+        this.boundHandlers = {};
+        
+        this.init();
+    }
+
+    init() {
+        this.createWalls();
+        this.setupEventListeners();
+        this.updateStats();
+        this.highlightCurrentPlayer();
+    }
+
+    createWalls() {
+        const walls = [
+            {id: 'leftWall', tiles: 38, index: 0},
+            {id: 'topWall', tiles: 38, index: 1},
+            {id: 'rightWall', tiles: 38, index: 2},
+            {id: 'bottomWall', tiles: 38, index: 3}
+        ];
+
+        walls.forEach(wall => {
+            this.wallTiles[wall.index] = MahjongUtils.createWall(
+                wall.id, 
+                wall.index, 
+                wall.tiles, 
+                false
+            );
+        });
+    }
+
+    setupEventListeners() {
+        this.boundHandlers = {
+            dragStart: this.handleDragStart.bind(this),
+            dragOver: this.handleDragOver.bind(this),
+            dragLeave: this.handleDragLeave.bind(this),
+            drop: this.handleDrop.bind(this),
+            click: this.handleClick.bind(this)
+        };
+
+        MahjongUtils.setupDragAndDrop(this.boundHandlers);
+        document.addEventListener('click', this.boundHandlers.click);
+    }
+
+    rollDice() {
+        if (this.phase !== 1) return;
+        
+        let dice1, dice2, total;
+        do {
+            dice1 = Math.floor(Math.random() * 6) + 1;
+            dice2 = Math.floor(Math.random() * 6) + 1;
+            total = dice1 + dice2;
+        } while (total % 2 === 0);
+        
+        this.diceTotal = total;
+        
+        MahjongUtils.updateStats({
+            'dice1': dice1,
+            'dice2': dice2,
+            'diceTotal': this.diceTotal
+        });
+        
+        this.phase = 2;
+        this.showBreakMarkers();
+    }
+
+    showBreakMarkers() {
+        const bottomWall = document.getElementById('bottomWall');
+        
+        for (let i = 1; i <= 19; i++) {
+            const marker = document.createElement('div');
+            marker.className = 'break-marker';
+            marker.dataset.position = i;
+            marker.style.right = (10 + (i-1) * 30) + 'px';
+            marker.style.top = '10px';
+            marker.title = `Break at position ${i}`;
+            bottomWall.appendChild(marker);
+        }
+    }
+
+    handleClick(e) {
+        if (e.target.classList.contains('break-marker') && this.phase === 2) {
+            const position = parseInt(e.target.dataset.position);
+            if (position === this.diceTotal) {
+                this.breakWall(position);
+                this.phase = 3;
+                document.getElementById('diceArea').classList.add('hidden');
+                this.makeNextTilesAvailable();
+                document.querySelectorAll('.break-marker').forEach(m => m.remove());
+            } else {
+                MahjongUtils.showHint(`Count ${this.diceTotal} from the right, not ${position}!`);
+            }
+        }
+    }
+
+    breakWall(position) {
+        this.wallBroken = true;
+        this.breakPosition = position;
+        
+        const wall = this.wallTiles[3];
+        const totalStacks = wall.length / 2;
+        const breakStackFromRight = position;
+        const breakStackFromLeft = totalStacks - breakStackFromRight;
+        const breakIndex = breakStackFromLeft * 2;
+
+        // Calculate tiles in front of dealer (to the left of break)
+        this.tilesInFrontOfDealer = breakIndex;
+
+        // Move tiles to the left of the break forward (up the screen)
+        for (let i = 0; i < breakIndex; i++) {
+            const tile = wall[i];
+            const currentTop = parseInt(tile.style.top);
+            tile.style.top = (currentTop - 60) + 'px';
+            tile.classList.add('dealing-pile');
+        }
+        
+        // Start dealing from the LAST tile of the moved pile (rightmost)
+        this.dealingStartIndex = breakIndex - 1;
+        this.currentWallIndex = 3;
+    }
+
+    // NEW METHOD: Move left wall tiles to create dealing pile
+    moveLeftWallForDealing() {
+        if (this.leftWallMoved) return;
+        
+        const leftWall = this.wallTiles[0];
+        
+        for (let i = 0; i < leftWall.length; i++) {
+            const tile = leftWall[i];
+            const currentLeft = parseInt(tile.style.left);
+            tile.style.left = (currentLeft + 40) + 'px';
+            tile.classList.add('dealing-pile');
+        }
+        
+        this.leftWallMoved = true;
+    }
+
+    makeNextTilesAvailable() {
+        this.availableTiles.forEach(tile => {
+            tile.classList.remove('available');
+            tile.draggable = false;
+        });
+        this.availableTiles = [];
+        
+        if (this.finalDealPhase) {
+            if (this.currentPlayerIndex === 3) {
+                this.makeNextTilesAvailableForDealer();
+            } else {
+                this.makeNextSingleTileAvailable();
+            }
+            return;
+        }
+        
+        let tilesToMakeAvailable = 4;
+        const wall = this.wallTiles[this.currentWallIndex];
+        let startIndex = this.dealingStartIndex;
+        
+        for (let i = 0; i < tilesToMakeAvailable && startIndex - i >= 0; i++) {
+            const tile = wall[startIndex - i];
+            if (tile && !tile.classList.contains('placed')) {
+                tile.classList.add('available');
+                tile.draggable = true;
+                this.availableTiles.push(tile);
+            }
+        }
+    }
+
+    makeNextTilesAvailableForDealer() {
+        const wall = this.wallTiles[this.currentWallIndex];
+        let startIndex = this.dealingStartIndex;
+        
+        // Make the next tile available (index 0)
+        if (startIndex >= 0) {
+            const nextTile = wall[startIndex];
+            if (nextTile && !nextTile.classList.contains('placed')) {
+                nextTile.classList.add('available');
+                nextTile.draggable = true;
+                this.availableTiles.push(nextTile);
+            }
+        }
+        
+        // Make the third tile available
+        if (startIndex - 4 >= 0) {
+            const thirdTile = wall[startIndex - 4];
+            if (thirdTile && !thirdTile.classList.contains('placed')) {
+                thirdTile.classList.add('available');
+                thirdTile.draggable = true;
+                this.availableTiles.push(thirdTile);
+            }
+        }
+    }
+
+    makeNextSingleTileAvailable() {
+        const wall = this.wallTiles[this.currentWallIndex];
+        let startIndex = this.dealingStartIndex;
+        
+        while (startIndex >= 0 && wall[startIndex].classList.contains('placed')) {
+            startIndex--;
+        }
+        
+        if (startIndex >= 0) {
+            const tile = wall[startIndex];
+            tile.classList.add('available');
+            tile.draggable = true;
+            this.availableTiles.push(tile);
+        }
+    }
+
+    handleDragStart(e) {
+        if (this.phase !== 3) return;
+        if (!e.target.classList.contains('mahjong-tile')) return;
+        if (e.target.classList.contains('placed')) return;
+        if (!e.target.classList.contains('available')) {
+            e.preventDefault();
+            MahjongUtils.showHint('Only drag the highlighted tiles!');
+            return;
+        }
+        
+        e.target.classList.add('dragging');
+        e.dataTransfer.setData('text/plain', 'cluster');
+    }
+
+    handleDragOver(e) {
+        if (e.target.classList.contains('drop-zone')) {
+            e.preventDefault();
+            e.target.classList.add('drag-over');
+        }
+    }
+
+    handleDragLeave(e) {
+        if (e.target.classList.contains('drop-zone')) {
+            e.target.classList.remove('drag-over');
+        }
+    }
+
+    handleDrop(e) {
+        e.preventDefault();
+        if (!e.target.classList.contains('drop-zone')) return;
+        
+        e.target.classList.remove('drag-over');
+        
+        const playerId = e.target.id;
+        const expectedPlayer = this.getExpectedPlayer();
+        
+        if (playerId === expectedPlayer) {
+            this.placeTileCluster(e.target);
+        } else {
+            MahjongUtils.showHint(`Deal to ${this.playerNames[this.currentPlayerIndex]} next!`);
+            this.availableTiles.forEach(tile => tile.classList.remove('dragging'));
+        }
+    }
+
+    getExpectedPlayer() {
+        const playerIds = ['playerRight', 'playerTop', 'playerLeft', 'playerYou'];
+        return playerIds[this.currentPlayerIndex];
+    }
+
+placeTileCluster(playerArea) {
+    const tilesToDeal = this.availableTiles.length;
+            
+    // Create cluster using utility function
+    const cluster = MahjongUtils.createTileCluster(
+        tilesToDeal, 
+        this.currentPlayerIndex === 3, 
+        this.finalDealPhase
+    );
+            
+    playerArea.appendChild(cluster);
+    if (navigator.vibrate) navigator.vibrate(50);
+    MahjongUtils.playClick();
+    cluster.classList.add('snap');
+    setTimeout(() => cluster.classList.remove('snap'), 200);
+            
+    // Remove tiles from wall
+    const wall = this.wallTiles[this.currentWallIndex];
+    
+    // Special handling for dealer's final deal (both 1st and 3rd tiles)
+    if (this.finalDealPhase && this.currentPlayerIndex === 3) {
+        // Remove the specific tiles that were made available
+        this.availableTiles.forEach(tile => {
+            const tileIndex = Array.from(wall).indexOf(tile);
+            if (tileIndex !== -1) {
+                wall[tileIndex].classList.add('placed');
+                wall[tileIndex].style.display = 'none';
+            }
+        });
+        
+        // Update dealing start index to continue from the next available tile
+        // Find the highest index that was removed
+        let maxRemovedIndex = -1;
+        this.availableTiles.forEach(tile => {
+            const tileIndex = Array.from(wall).indexOf(tile);
+            if (tileIndex > maxRemovedIndex) {
+                maxRemovedIndex = tileIndex;
+            }
+        });
+        
+        // Set dealing start index to just before the highest removed tile
+        // This ensures we continue dealing from the next sequential tile
+        this.dealingStartIndex = maxRemovedIndex - 1;
+    } else {
+        // Normal sequential removal for other players
+        for (let i = 0; i < tilesToDeal; i++) {
+            const tileIndex = this.dealingStartIndex - i;
+            if (wall[tileIndex]) {
+                wall[tileIndex].classList.add('placed');
+                wall[tileIndex].style.display = 'none';
+            }
+        }
+        this.dealingStartIndex -= tilesToDeal;
+    }
+            
+    this.tilesDealt += tilesToDeal;
+    this.playerTileCounts[this.currentPlayerIndex] += tilesToDeal;
+            
+    // Check if we finished dealing from tiles in front of dealer
+    if (this.currentWallIndex === 3 && this.dealingStartIndex < 0) {
+        this.currentWallIndex = 0;
+        this.dealingStartIndex = this.wallTiles[0].length - 1;
+        this.moveLeftWallForDealing();
+    } else if (this.dealingStartIndex < 0) {
+        this.currentWallIndex = (this.currentWallIndex + 1) % 4;
+        this.dealingStartIndex = this.wallTiles[this.currentWallIndex].length - 1;
+    }
+            
+    this.moveToNextPlayer();
+    this.updateStats();
+    this.highlightCurrentPlayer();
+    this.checkInitialDealComplete();
+            
+    if (!this.initialDealComplete || this.finalDealPhase) {
+        this.makeNextTilesAvailable();
+    }
+            
+    this.checkCompletion();
+}
+
+    checkInitialDealComplete() {
+        const allHave12 = this.playerTileCounts.every(count => count >= 12);
+        
+        if (allHave12 && !this.initialDealComplete) {
+            this.initialDealComplete = true;
+            this.finalDealPhase = true;
+            this.currentPlayerIndex = 3;
+        }
+    }
+
+    moveToNextPlayer() {
+        if (this.finalDealPhase) {
+            if (this.currentPlayerIndex === 3) {
+                this.currentPlayerIndex = 0;
+            } else {
+                this.currentPlayerIndex++;
+                if (this.currentPlayerIndex === 3) {
+                    this.finalDealPhase = false;
+                }
+            }
+        } else {
+            this.currentPlayerIndex = (this.currentPlayerIndex + 1) % 4;
+            
+            if (this.currentPlayerIndex === 3) {
+                this.dealingRound++;
+            }
+        }
+    }
+
+    highlightCurrentPlayer() {
+        const playerIds = ['playerRight', 'playerTop', 'playerLeft', 'playerYou'];
+        const currentPlayerId = playerIds[this.currentPlayerIndex];
+        
+        MahjongUtils.highlightCurrentPlayer('current-player', currentPlayerId, playerIds);
+    }
+
+    updateStats() {
+        MahjongUtils.updateStats({
+            'tilesDealt': this.tilesDealt,
+            'currentPlayer': this.playerNames[this.currentPlayerIndex]
+        });
+        
+        const playerElements = [
+            {id: 'playerLeft', name: 'North', count: this.playerTileCounts[2]},
+            {id: 'playerTop', name: 'West', count: this.playerTileCounts[1]},
+            {id: 'playerRight', name: 'South', count: this.playerTileCounts[0]},
+            {id: 'playerYou', name: 'East', count: this.playerTileCounts[3]}
+        ];
+        
+        playerElements.forEach(player => {
+            const element = document.getElementById(player.id);
+            if (element) {
+                element.setAttribute('data-player', `${player.name} (${player.count})`);
+            }
+        });
+    }
+
+    checkCompletion() {
+        const targetCounts = [13, 13, 13, 14];
+        const isComplete = this.playerTileCounts.every((count, i) => count >= targetCounts[i]);
+        
+        if (isComplete) {
+            MahjongUtils.showCompletion('completionMessage');
+        }
+    }
+
+    showHint(message) {
+        MahjongUtils.showHint(message || 'Deal tiles in counter-clockwise order.');
+    }
+
+    reset() {
+        location.reload();
+    }
+}
+
+const game = new MahjongDealingGame();
+</script>

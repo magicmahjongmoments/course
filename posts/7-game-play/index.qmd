@@ -1,0 +1,45 @@
+---
+title: "Game Play" 
+image: "featured.png" 
+order: 7 
+---
+
+Now that you know the tiles, the deal, the Charleston, and the card—it’s time to actually **play the game**!
+
+### The Flow of a Turn
+
+Each player takes turns in **counter-clockwise order**, beginning with East. A turn has two main steps:
+
+1.  **Draw a Tile**
+    -   On your turn, you must draw **one tile**.\
+    -   You can draw from the **wall** (the normal stack of tiles) OR call a **discard** if it completes a set for your hand.
+2.  **Discard a Tile**
+    -   After drawing, you must discard **one tile face-up** into the center.\
+    -   Your hand always returns to **13 tiles** (or 14 if you’re declaring Mahjong).
+
+### Calling Discards
+
+When someone discards a tile, other players have the chance to **call** it:
+
+-   **Pung/Kong/Quint**: If the discard completes your set of 3, 4, or 5 identical tiles, you can call immediately.\
+-   **Mahjong!**: If the discard gives you a complete hand from the card, you can declare **Mahjong** and win the round.\
+-   **Priority**: If multiple players want the same discard, the one declaring Mahjong always takes priority. Otherwise, the player closest in turn order to the discarder gets it.
+
+::: box
+**Pro tip:** You can only call for a pair if it completes a winning Mahjong hand. Otherwise, pairs must be drawn naturally.
+:::
+
+### Winning a Hand
+
+To declare Mahjong, your hand must:
+
+-   Match **exactly** one of the combinations shown on the card\
+-   Contain **14 tiles** (13 plus the winning tile)
+
+Once you win, you lay down your tiles for all players to see and the hand ends.
+
+### Ending Without a Winner
+
+If all tiles in the wall are used up before anyone declares Mahjong, the round ends in a **wall game**. Players reset and start a new hand, rotating the dealer position (East).
+
+[Now that you know how to play, vist our shop](https://magicmahjongmoments.com){.btn .btn-lg style="background-color: #f0609d; color: white; border: none; border-radius: 25px; padding: 12px 30px; font-weight: 500; text-decoration: none; display: inline-block;"}

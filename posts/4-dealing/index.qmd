@@ -1,0 +1,109 @@
+---
+title: "Learn the Deal"
+image: "featured.png"
+format: 
+  html: 
+    include-after-body:
+      - file: "dealing.html"
+order: 4
+---
+
+We begin by determining **who is East** by rolling the dice. The tiles are dealt from **East**'s wall first. This will rotate each round.
+
+Here is how the deal works:
+
+1.  **East** will roll the dice to **break the wall** (this is like cutting the deck in cards). You break the wall by counting the number rolled from the right side of the wall. These tiles are left behind, you then "push" the remaining tiles in wall forward and deal from those.
+2.  **East takes the first tiles** and then the deal continues **counter-clockwise**. Each player takes two stacks of tiles (4 titles total) until all players have **12 tiles**
+3.  After the final player (**North**) has 12 tiles, **East** takes the first and third tile from the top of the wall -- they will now have **14 tiles**. Then the remaining players each take **1 tile**, they will each have **13 tiles**.
+
+::: {.container .d-none .d-md-block}
+**Your Turn**: Try practicing the deal below. First click to roll the dice. Then select where the East wall should "break" based on the roll. Finally drag the right number of tiles to each player.
+
+::: {#gameBoard .game-board}
+::: {#leftWall .wall-area .left data-wall="North Wall"}
+:::
+
+::: {#rightWall .wall-area .right data-wall="South Wall"}
+:::
+
+::: {#topWall .wall-area .top data-wall="West Wall"}
+:::
+
+::: {#bottomWall .wall-area .bottom data-wall="East Wall"}
+:::
+
+::: {#playerLeft .player-area .player-left .drop-zone data-player="North (0)"}
+:::
+
+::: {#playerRight .player-area .player-right .drop-zone data-player="South (0)"}
+:::
+
+::: {#playerTop .player-area .player-top .drop-zone data-player="West (0)"}
+:::
+
+::: {#playerYou .player-area .player-bottom .drop-zone data-player="East (0)"}
+:::
+
+::: {#diceArea .dice-area}
+Roll the dice to start dealing
+
+::: {#dice1 .dice}
+:::
+
+::: {#dice2 .dice}
+:::
+
+Total
+
+<button onclick="game.rollDice()" class="game-btn">
+
+Roll Dice
+
+</button>
+:::
+:::
+
+::: stats
+::: stat-box
+::: {#tilesDealt .stat-number}
+0
+:::
+
+Tiles Dealt
+:::
+
+::: stat-box
+::: {#currentPlayer .stat-number}
+You
+:::
+
+Next Deal Goes To
+:::
+:::
+
+::: text-center
+<button onclick="game.reset()" class="game-btn">
+
+Reset Game
+</button>
+
+<button onclick="game.showHint()" class="game-btn">
+
+Show Hint
+</button>
+:::
+
+::: {#completionMessage .completion-message}
+## 🎉 Perfect Deal!
+
+You've successfully dealt all tiles correctly!\
+Each player has the right number of tiles.
+
+<button onclick="game.reset()" class="game-btn">
+
+Practice Again
+</button>
+:::
+:::
+
+[Next Lesson](/posts/5-charleston){.game-btn}

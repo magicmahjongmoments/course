@@ -1,0 +1,171 @@
+---
+title: "The Card"
+image: "featured.png"
+order: 6
+---
+
+The American Mahjong card is your guide to winning hands. You can purchase this year's **official card** from the [National Mah Jongg League](https://www.nationalmahjonggleague.org/store.aspx#). Each line shows exactly what 14 tiles you need to win, using shorthand symbols and helpful notes.
+
+::: mahj-carousel
+::: {#carousel .mahj-carousel-inner}
+::: mahj-slide
+### Basic Structure
+
+Every line on the card represents one complete winning hand. The card is organized into different categories, and each hand shows:
+
+-   **Shorthand notation** (the tile abbreviations)
+-   **Notes** (additional details about requirements)
+-   **Point values** (how much the hand is worth)
+-   **Concealed** (whether the hand must be concealed, incidated by a **C**)
+:::
+
+::: mahj-slide
+### Shorthand
+
+The card uses these standard abbreviations:
+
+-   **1-9**: Numbered tiles (any suit: dots, bams, or craks)
+-   **D**: Dragon
+-   **0**: Soap (white dragon, can be paired with any suit)
+-   **N, E, W, S**: Wind tiles (North, East, West, South)
+-   **F**: Flower tiles
+
+### Examples
+
+[11 22 333 444 5555]{style="color: grey; font-weight:bold;"}
+
+This means you need **2 ones**, **2 twos**, **3 threes**, **3 fours**, and **4 fives**
+
+[FFFF 11 22 333 DDD]{style="color: grey; font-weight:bold;"}
+
+This means you need **4 flowers**, **2 ones**, **2 twos**, **3 threes**, and **3 dragons**
+:::
+
+::: mahj-slide
+### Essential Vocabulary
+
+Understanding these terms is crucial for reading the card:
+
+-   **Pair**: 2 identical tiles
+-   **Pung**: 3 identical tiles\
+-   **Kong**: 4 identical tiles
+-   **Quint**: 5 identical tiles
+:::
+
+::: mahj-slide
+### Reading the Notes
+
+The notes next to each line give you critical information:
+
+**Suit Requirements**
+
+-   "Same suit" = All numbered tiles must be from the same suit
+-   "Any 3 suits" = Use tiles from exactly 3 different suits
+-   "2 suits" = Use tiles from exactly 2 suits
+
+**Special Conditions**
+
+-   "**X**" = The pungs (sets of 3), kongs (sets of 4), or quints (sets of 5) can be called from the discards
+-   "**C**" = Conceled. NO tiles cannot be called from discards
+-   "Consecutive numbers" = Numbers must be in order (like 1-2-3)
+
+### Example
+
+[FFFF 11 22 333 DDD]{style="color: grey; font-weight:bold;"} (Any 3 Consec. Nos. with Matching Dragons)
+
+This means you do not need *exactly* **11 22 333**, but you can use **any** 3 consecutive numbers (i.e. **44 55 666** or **77 88 999** would also work!). The dragons must match the suit, (i.e. if you numbers are all bams, you must use the green dragons, if your numbers are all craks you must use the red dragon, if your numbers are all dots you must use the white dragon (soap!)).
+:::
+
+::: mahj-slide
+### Color Coding
+
+When numbered tiles appear in the **same color** on the card, they must all be from the **same suit**.
+
+Different colors mean you must have different suits for those tiles.
+
+This visual system helps you quickly identify suit requirements at a glance.
+
+### Example
+
+[22 44]{style="color: green; font-weight:bold;"} [44 666]{style="color: red; font-weight:bold;"} [8888]{style="color: grey; font-weight:bold;"} (Any 3 Suits)
+
+This means that the suit for the **22** and **44** must match, the suit for the **44 666** must match (and be different from the **22** **44** suit), and the **8888** must be in the third suit.
+:::
+
+::: mahj-slide
+### Common Card Sections
+
+The hands are grouped into sections that appear year after year:
+
+**{Year}**: Hands using the current year with numbered tiles and soaps (e.g. **2025**)\
+**2468**: Hands with only even numbers\
+**Any Like Numbers**: All numbers are the same (e.g., all 3s)\
+**Math Sections**: Some cards include multiplication/addition themes (e.g., **FF** **1111** + **6666** = **7777**)\
+**Quints**: Hands including 5-of-a-kind groupings\
+**Consecutive Runs**: Numbers in increasing order (e.g., 1, 2, 3, 4, 5)\
+**13579**: Hands with only odd numbers\
+**Winds and Dragons**: Hands featuring mostly winds and dragons\
+**369**: Hands using the numbers 3, 6, and 9\
+**Singles and Pairs**: Hands with only single tiles and pairs
+:::
+
+::: mahj-slide
+### How to Use the Card
+
+1.  **Pick a category** that matches tiles you're collecting
+2.  **Read the shorthand** to see what tiles you need
+3.  **Check the notes** for specific requirements
+4.  **Count to 14** to verify it's a complete hand
+
+The combination of shorthand + notes tells you exactly what you need to win!
+:::
+:::
+:::
+
+<br>
+
+::: {.nav-buttons .text-center}
+<button class="nav-btn game-btn" onclick="scrollCarousel(-1)">
+
+← Previous
+</button>
+
+<button class="nav-btn game-btn" onclick="scrollCarousel(1)">
+
+Next →
+</button>
+:::
+
+::: box
+**Pro tip:** Make sure to read the notes! Sometimes the pattern will use one number, but the notes specify that multiple numbers qualify.
+:::
+
+
+[Next Lesson](/posts/7-game-play){.game-btn}
+
+
+```{=html}
+<script>
+let currentSlide = 0;
+const carousel = document.getElementById('carousel');
+const slides = carousel.children;
+const totalSlides = slides.length;
+
+function scrollCarousel(direction) {
+    currentSlide += direction;
+    if (currentSlide < 0) currentSlide = 0;
+    if (currentSlide >= totalSlides) currentSlide = totalSlides - 1;
+    
+    const slideWidth = slides[0].offsetWidth;
+    carousel.scrollTo({
+        left: slideWidth * currentSlide,
+        behavior: 'smooth'
+    });
+}
+
+carousel.addEventListener('scroll', () => {
+    const slideWidth = slides[0].offsetWidth;
+    currentSlide = Math.round(carousel.scrollLeft / slideWidth);
+});
+</script>
+```

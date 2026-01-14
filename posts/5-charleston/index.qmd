@@ -1,0 +1,180 @@
+---
+title: "The Charleston"
+image: "featured.png"
+format: 
+  html: 
+    include-after-body:
+      - file: "charleston.html"
+order: 5
+---
+
+After the tiles are dealt, the game begins with a **Charleston** - a series of tile exchanges between players. Each Charleston consists of three passes, with each player passing exactly 3 tiles during each pass.
+
+<script src="../../codes.js"></script>
+<script src="../../unlock.js"></script>
+
+::: {#unlock-section style="border:1px solid #ccc; padding:1rem; margin:2rem 0; text-align:center;"}
+
+## Unlock Interactive Lessons
+
+Purchase full access:
+
+{{< include ../../learn-to-play-buy-button.html >}}
+
+Already have a code?
+
+::: {style="margin-bottom:1rem;"}
+
+<input type="text" id="code-input" placeholder="Enter your unlock code" style="padding:0.5rem; width:250px;">
+<button onclick="validateCode()" style="padding:0.5rem 1rem; margin-left:0.5rem;">Unlock</button>
+
+:::
+
+:::
+
+::: {#premium-content style="display:none;"}
+
+The final pass of a Charleston can be a **blind pass**. Instead of selecting 3 tiles from your hand, you can choose 0, 1, or 2 tiles from your own collection and complete the set of 3 by including tiles you just received from another player (without looking at them first).
+
+If all players agree, you can complete **two full Charlestons** before starting the main game. The order of the passes are:
+
+**First Charleston**: Right → Across → Left\
+**Second Charleston**: Left → Across → Right
+
+After the Charleston(s), players may make an optional **courtesy pass** with the player sitting across from them. Both players must agree on how many tiles to exchange (0-3 tiles each). Either player can decline to pass any tiles.
+
+::: {.container .d-none .d-md-block}
+::: instructions
+**Practice the Charleston:**
+
+Select 3 tiles to pass each time. Drag the tiles to the correct player.
+
+**First Charleston**: Right → Across → Left\
+**Second Charleston**: Left → Across → Right
+
+Blind passes can be made on the 2nd Left and 2rd Right.
+:::
+
+::: stats
+::: stat-box
+::: {#charleston-round .stat-number}
+1
+:::
+
+Charleston
+:::
+
+::: stat-box
+::: {#pass-number .stat-number}
+1
+:::
+
+Pass
+:::
+
+::: stat-box
+::: {#tiles-selected .stat-number}
+0
+:::
+
+Tiles Selected
+:::
+:::
+
+::: game-board
+::: pass-counter
+[Pass Right]{#pass-direction}
+:::
+
+<!-- Player positions -->
+
+::: {#player-you .player-hand .you .current}
+::: player-label
+You
+:::
+
+::: {#your-tiles .tile-container}
+:::
+:::
+
+::: {#player-right .player-hand .right}
+::: player-label
+Right
+:::
+
+::: {#right-tiles .tile-container}
+:::
+:::
+
+::: {#player-across .player-hand .across}
+::: player-label
+Across
+:::
+
+::: {#across-tiles .tile-container}
+:::
+:::
+
+::: {#player-left .player-hand .left}
+::: player-label
+Left
+:::
+
+::: {#left-tiles .tile-container}
+:::
+:::
+
+::: {#drop-right .drop-zone}
+:::
+
+::: {#drop-across .drop-zone}
+:::
+
+::: {#drop-left .drop-zone}
+:::
+
+::: {#charleston-info .charleston-info style="display: none;"}
+### Charleston Complete!
+
+<button onclick="charlestonGame.nextCharleston()" class="game-btn">
+
+Continue
+</button>
+:::
+:::
+
+::: {.controls .text-center}
+<button id="blind-pass-btn" onclick="charlestonGame.makeBlindPass()" style="display: none;" class="game-btn">
+
+Blind Pass
+</button>
+
+<button onclick="charlestonGame.skipSecondPass()" class="game-btn" id="skip-btn" style="display: none;">
+
+Skip 2nd Charleston
+</button>
+
+<button onclick="charlestonGame.newGame()" class="game-btn">
+
+New Game
+</button>
+
+<button onclick="charlestonGame.showHelp()" class="game-btn">
+
+Help
+</button>
+
+<button id="clear-selection-btn" class="game-btn" style="display: none;">
+
+Clear Selection
+</button>
+
+<button id="sort-hand-btn" class="game-btn">
+
+Sort Hand
+</button>
+:::
+:::
+:::
+
+[Next Lesson](/posts/6-card){.game-btn}

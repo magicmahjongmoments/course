@@ -1,0 +1,94 @@
+---
+title: "Setup and Seating"
+image: "featured.png"
+order: 1
+---
+
+Welcome to the wonderful world of American Mahjong! Let's start with the basics.
+
+
+<script src="../../codes.js"></script>
+<script src="../../unlock.js"></script>
+
+::: {#unlock-section style="border:1px solid #ccc; padding:1rem; margin:2rem 0; text-align:center;"}
+
+## Unlock Interactive Lessons
+
+Purchase full access:
+
+{{< include ../../learn-to-play-buy-button.html >}}
+
+Already have a code?
+
+::: {style="margin-bottom:1rem;"}
+
+<input type="text" id="code-input" placeholder="Enter your unlock code" style="padding:0.5rem; width:250px;">
+<button onclick="validateCode()" style="padding:0.5rem 1rem; margin-left:0.5rem;">Unlock</button>
+
+:::
+
+:::
+
+::: {#premium-content style="display:none;"}
+
+## The Four Winds Around Your Table
+
+American Mahjong is played by four players, each representing one of the cardinal wind directions.
+
+**East** - The dealer and starting position\
+**South** - Sits to East's right\
+**West** - Sits across from East\
+**North** - Sits to East's left
+
+***Fun Fact:** The wind seating doesn't follow a traditional compass layout. In Mahjong, the winds follow Asian cardinal points and have traditional associations with seasons (East/Spring, South/Summer, West/Autumn, North/Winter), which may explain why the arrangement differs from a standard compass.*
+
+::: {#gameBoard .game-board .d-none .d-md-block}
+::: {.wall-area .left data-wall="NORTH"}
+:::
+
+::: {.wall-area .right data-wall="SOUTH"}
+:::
+
+::: {.wall-area .top data-wall="WEST"}
+:::
+
+::: {.wall-area .bottom data-wall="EAST"}
+:::
+:::
+
+The wind positions rotate throughout the game, giving each player a turn as the dealer. Don't worry about memorizing everything now, we'll cover the significance of these positions as we progress through the lessons.
+
+## Everything You'll Need to Play
+
+Here are the essentials:
+
+### The Mahjong Set
+
+-   American Mahjong set with **152 tiles**
+-   **Two dice** for determining seating and wall breaks
+
+### The Official Card
+
+-   Current year's **official card** from the [National Mah Jongg League](https://www.nationalmahjonggleague.org/store.aspx#)
+-   This card contains all the winning combinations you can make
+
+### Score Tracking (Optional)
+
+-   Scoring chips for easy point tracking, or
+-   Paper and pencil for traditional scorekeeping
+
+## Let's Learn!
+
+Ready to become a mahjong player? We've designed this guide to take you step-by-step through everything you need to know. Here's what's coming up:
+
+1.  **Tiles** - Understanding the symbols and suits
+2.  **Building the Walls** - Setting up each game
+3.  **The Deal** - How tiles are distributed to players
+4.  **The Charleston** - The unique tile-passing that kicks off the gam
+5.  **Playing the Game** - Bringing it all together
+
+Each lesson builds on the previous one, so you'll develop confidence naturally as you progress. By the end, you'll be ready to join any mahjong table with the pros!
+
+:::
+
+[Next Lesson](/posts/2-tiles){.game-btn}

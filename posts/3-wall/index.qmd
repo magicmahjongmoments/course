@@ -1,0 +1,128 @@
+---
+title: "Building the Wall"
+image: "featured.png"
+format: 
+  html: 
+    include-after-body:
+      - file: "build-the-wall.html"
+order: 3
+---
+
+At the start of the game all **152** tiles are in the center of the table face down. Each player builds their own wall of tiles in front of their position. The wall consists of:
+
+-   **19 tiles across** - placed end to end in a line\
+-   **2 tiles high** - each stack is two tiles tall\
+-   **38 tiles total** per wall (19 × 2)
+
+All tiles are placed **face down** so no one can see what they are.
+
+<script src="../../codes.js"></script>
+<script src="../../unlock.js"></script>
+
+::: {#unlock-section style="border:1px solid #ccc; padding:1rem; margin:2rem 0; text-align:center;"}
+
+## Unlock Interactive Lessons
+
+Purchase full access:
+
+{{< include ../../learn-to-play-buy-button.html >}}
+
+Already have a code?
+
+::: {style="margin-bottom:1rem;"}
+
+<input type="text" id="code-input" placeholder="Enter your unlock code" style="padding:0.5rem; width:250px;">
+<button onclick="validateCode()" style="padding:0.5rem 1rem; margin-left:0.5rem;">Unlock</button>
+
+:::
+
+:::
+
+::: {#premium-content style="display:none;"}
+
+::: {.container .d-none .d-md-block}
+**Your Turn**: Try practicing building a wall by dragging the right number of tiles to the pink area labeled "Your Wall" below.
+
+::: {#gameBoard .game-board}
+::: {#leftWall .wall-area .left .built-wall data-wall="Left"}
+:::
+
+::: {#rightWall .wall-area .right .built-wall data-wall="Right"}
+:::
+
+::: {#topWall .wall-area .top .built-wall data-wall="Across"}
+:::
+
+::: {#bottomWall .wall-area .bottom .built-wall data-wall="Your Wall"}
+:::
+
+::: {#tileCenter .tile-center}
+:::
+:::
+
+::: {.stats .text-center}
+::: stat-box
+::: {#tilesRemaining .stat-number}
+38
+:::
+
+Tiles Remaining
+:::
+
+::: stat-box
+::: {#stacksBuilt .stat-number}
+0
+:::
+
+Stacks Built
+:::
+
+::: stat-box
+::: {#tilesPlaced .stat-number}
+0
+:::
+
+Tiles Place
+:::
+
+::: stat-box
+::: {#stacksNeeded .stat-number}
+19
+:::
+
+Stacks Needed
+:::
+:::
+
+::: {.controls .text-center}
+<button onclick="game.reset()" class="game-btn">
+
+Reset Game
+</button>
+
+<button onclick="game.showHint()" class="game-btn">
+
+Show Hint
+</button>
+
+<button onclick="game.autoComplete()" class="game-btn">
+
+Auto Complete
+</button>
+:::
+
+::: {#completionMessage .completion-message}
+## 🎉 Perfect!
+
+You've successfully built your wall!\
+Your wall has exactly **19 stacks of 2 tiles** = **38 tiles total**
+
+<button onclick="game.reset()" class="game-btn">
+
+Practice Again
+
+</button>
+:::
+:::
+:::
+[Next Lesson](/posts/4-dealing){.game-btn}
