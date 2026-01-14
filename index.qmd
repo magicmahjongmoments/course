@@ -1,0 +1,52 @@
+---
+title: "Learn to Play"
+toc: false
+listing:
+  id: premium-listing
+  contents: posts
+  type: grid
+  sort: "order"
+  fields: [image, title]
+  grid-columns: 3
+  grid-item-border: true
+  grid-item-align: center
+anchor-sections: false
+---
+
+
+## Discover the Joy of Mahjong
+
+Mahjong is more than a game — it's a tradition, a connection, and a source of unforgettable memories. Whether you're brand new or a seasoned player, our Learn to Play course helps you explore the game at your own pace.  
+
+## Step-by-Step, At Your Pace
+
+Created by our co-founder, Lucy, this digital course guides you through the rules, strategies, and rhythm of Mahjong in a clear, approachable format. Enjoy interactive lessons that bring the game to life, whether you're just starting or revisiting your skills.  
+
+***Note: Some lessons include interactive components that work best on a larger screen.***
+
+
+<script src="codes.js"></script>
+<script src="unlock.js"></script>
+
+::: {#unlock-section style="border:1px solid #ccc; padding:1rem; margin:2rem 0; text-align:center;"}
+
+## Unlock Interactive Lessons
+
+Purchase full access:
+
+{{< include learn-to-play-buy-button.html >}}
+
+Already have a code?
+
+::: {style="margin-bottom:1rem;"}
+
+<input type="text" id="code-input" placeholder="Enter your unlock code" style="padding:0.5rem; width:250px;">
+<button onclick="validateCode()" style="padding:0.5rem 1rem; margin-left:0.5rem;">Unlock</button>
+
+:::
+
+:::
+
+
+::: {#premium-listing style="display:none;"}
+:::
