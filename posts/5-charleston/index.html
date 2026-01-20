@@ -223,12 +223,14 @@ ul.task-list li input[type="checkbox"] {
 
 </div>
 <div id="charleston-info" class="charleston-info" style="display: none;">
+<div id="charleston-message">
 <section id="charleston-complete" class="level3">
 <h3 class="anchored" data-anchor-id="charleston-complete">Charleston Complete!</h3>
 <button onclick="charlestonGame.nextCharleston()" class="game-btn">
 Continue
 </button>
 </section>
+</div>
 </div>
 </div>
 <div class="controls text-center">
@@ -330,7 +332,7 @@ Sort Hand
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/magicmahjongmoments\.github\.io\/course\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
@@ -1043,18 +1045,25 @@ class UIRenderer {
         }
     }
 
-    showCharlestonInfo(message, buttonText, buttonCallback) {
-        const info = document.getElementById('charleston-info');
-        const messageElement = document.getElementById('charleston-message');
-        const button = info.querySelector('button');
-
-        if (messageElement) messageElement.innerHTML = message;
-        if (button) {
-            button.textContent = buttonText;
-            button.onclick = buttonCallback;
-        }
-        if (info) info.style.display = 'block';
-    }
+showCharlestonInfo(message, buttonText, buttonCallback) {
+    const info = document.getElementById('charleston-info');
+    const messageElement = document.getElementById('charleston-message');
+    let button = info.querySelector('button');
+    
+    if (messageElement) messageElement.innerHTML = message;
+    
+    // Clear all buttons first
+    info.querySelectorAll('button').forEach(btn => btn.remove());
+    
+    // Create new button
+    button = document.createElement('button');
+    button.textContent = buttonText;
+    button.className = 'game-btn';
+    button.onclick = buttonCallback;
+    info.appendChild(button);
+    
+    if (info) info.style.display = 'block';
+}
 
     hideCharlestonInfo() {
         const info = document.getElementById('charleston-info');
@@ -1358,11 +1367,6 @@ class CharlestonGame {
         MahjongUtils.showHint('Blind pass cancelled.');
     }
 
-    /**
-     * **REWRITTEN**
-     * Adds received tiles to the left of the player's hand (unsorted)
-     * so they are easy to identify. Other players' hands are sorted automatically.
-     */
     performPass(tilesToPass) {
         this.gameState.playerHands.you = HandManager.removeTilesFromHand(this.gameState.playerHands.you, tilesToPass);
 
@@ -1419,10 +1423,6 @@ class CharlestonGame {
         this.updateUI();
     }
     
-    /**
-     * **NEW**
-     * Clears the current tile selection.
-     */
     clearSelection() {
         this.uiRenderer.clearAllSelections();
         this.gameState.clearSelectedTiles();
@@ -1430,10 +1430,6 @@ class CharlestonGame {
         MahjongUtils.showHint('Selection cleared.');
     }
     
-    /**
-     * **NEW**
-     * Sorts the player's hand and re-renders it.
-     */
     sortPlayerHand() {
         this.gameState.playerHands.you = HandManager.sortHand(this.gameState.playerHands.you);
         this.renderAllHands();
@@ -1448,13 +1444,33 @@ class CharlestonGame {
         }
     }
 
-    completeCharleston() {
-        this.uiRenderer.showCharlestonInfo(
-            'First Charleston complete! Ready for the second Charleston?',
-            'Continue',
-            () => this.nextCharleston()
-        );
+completeCharleston() {
+    const info = document.getElementById('charleston-info');
+    const messageElement = document.getElementById('charleston-message');
+    
+    if (messageElement) {
+        messageElement.innerHTML = 'First Charleston complete!<br><br>Would you like to continue with the second Charleston or stop here?';
     }
+    
+    // Clear all existing buttons
+    info.querySelectorAll('button').forEach(btn => btn.remove());
+    
+    // Create Continue button
+    const continueBtn = document.createElement('button');
+    continueBtn.textContent = 'Continue';
+    continueBtn.className = 'game-btn';
+    continueBtn.onclick = () => this.nextCharleston();
+    info.appendChild(continueBtn);
+    
+    // Create Stop Here button
+    const stopBtn = document.createElement('button');
+    stopBtn.textContent = 'Stop Here';
+    stopBtn.className = 'game-btn';
+    stopBtn.onclick = () => this.completeGame();
+    info.appendChild(stopBtn);
+    
+    info.style.display = 'block';
+}
 
     nextCharleston() {
         this.uiRenderer.hideCharlestonInfo();

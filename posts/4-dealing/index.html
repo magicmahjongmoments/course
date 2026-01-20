@@ -284,7 +284,7 @@ Practice Again
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/magicmahjongmoments\.github\.io\/course\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
@@ -817,6 +817,7 @@ class MahjongDealingGame {
                 this.availableTiles.push(tile);
             }
         }
+        this.autoDealToOtherPlayers();
     }
 
     makeNextTilesAvailableForDealer() {
@@ -842,6 +843,7 @@ class MahjongDealingGame {
                 this.availableTiles.push(thirdTile);
             }
         }
+      this.autoDealToOtherPlayers();
     }
 
     makeNextSingleTileAvailable() {
@@ -858,6 +860,8 @@ class MahjongDealingGame {
             tile.draggable = true;
             this.availableTiles.push(tile);
         }
+              this.autoDealToOtherPlayers();
+
     }
 
     handleDragStart(e) {
@@ -901,6 +905,18 @@ class MahjongDealingGame {
         } else {
             MahjongUtils.showHint(`Deal to ${this.playerNames[this.currentPlayerIndex]} next!`);
             this.availableTiles.forEach(tile => tile.classList.remove('dragging'));
+        }
+    }
+
+    autoDealToOtherPlayers() {
+        // Auto-deal for non-East players (indices 0, 1, 2)
+        if (this.currentPlayerIndex !== 3) {
+            const playerIds = ['playerRight', 'playerTop', 'playerLeft', 'playerYou'];
+            const targetPlayer = document.getElementById(playerIds[this.currentPlayerIndex]);
+            
+            setTimeout(() => {
+                this.placeTileCluster(targetPlayer);
+            }, 300);
         }
     }
 
