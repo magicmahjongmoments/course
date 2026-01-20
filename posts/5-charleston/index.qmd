@@ -134,12 +134,14 @@ Left
 :::
 
 ::: {#charleston-info .charleston-info style="display: none;"}
+::: {#charleston-message}
 ### Charleston Complete!
 
 <button onclick="charlestonGame.nextCharleston()" class="game-btn">
 
 Continue
 </button>
+:::
 :::
 :::
 
