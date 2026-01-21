@@ -237,9 +237,6 @@ Continue
 <button id="blind-pass-btn" onclick="charlestonGame.makeBlindPass()" style="display: none;" class="game-btn">
 Blind Pass
 </button>
-<button onclick="charlestonGame.skipSecondPass()" class="game-btn" id="skip-btn" style="display: none;">
-Skip 2nd Charleston
-</button>
 <button onclick="charlestonGame.newGame()" class="game-btn">
 New Game
 </button>
@@ -1018,22 +1015,14 @@ class UIRenderer {
         }
     }
 
-    /**
-     * **REWRITTEN**
-     * Manages visibility of all control buttons.
-     */
-    updateButtons(selectedCount, blindPassAllowed, canSkip) {
+
+    updateButtons(selectedCount, blindPassAllowed) {
         const blindBtn = document.getElementById('blind-pass-btn');
-        const skipBtn = document.getElementById('skip-btn');
         const passBtn = document.getElementById('pass-btn');
         const clearBtn = document.getElementById('clear-selection-btn');
 
         if (blindBtn) {
             blindBtn.style.display = blindPassAllowed ? 'inline-block' : 'none';
-        }
-        
-        if (skipBtn) {
-            skipBtn.style.display = canSkip ? 'inline-block' : 'none';
         }
 
         if (passBtn) {
@@ -1242,19 +1231,29 @@ class CharlestonGame {
                 }
             },
             drop: (event) => {
-                const dropZone = self.getDropZoneForDirection(self.gameState.currentDirection);
-                if (dropZone) {
-                    dropZone.classList.remove('drag-over');
-                }
-
-                if (dropZone && (event.target === dropZone || dropZone.contains(event.target))) {
-                    if (self.gameState.getSelectedCount() !== 3) {
-                        MahjongUtils.showHint('Please select exactly 3 tiles before dropping to pass!');
-                        return;
-                    }
-                    self.handleAllSelectedTilesDrop();
-                }
-            },
+    const dropZone = self.getDropZoneForDirection(self.gameState.currentDirection);
+    if (dropZone) {
+        dropZone.classList.remove('drag-over');
+    }
+    if (dropZone && (event.target === dropZone || dropZone.contains(event.target))) {
+        const selectedCount = self.gameState.getSelectedCount();
+        
+        // Validate based on whether it's courtesy pass or regular pass
+        if (self.gameState.isCourtesyPass) {
+            if (selectedCount === 0 || selectedCount > 3) {
+                MahjongUtils.showHint('Please select 1-3 tiles for Courtesy Pass!');
+                return;
+            }
+        } else {
+            if (selectedCount !== 3) {
+                MahjongUtils.showHint('Please select exactly 3 tiles before dropping to pass!');
+                return;
+            }
+        }
+        
+        self.handleAllSelectedTilesDrop();
+    }
+},
             dragEnd: (event) => {
                 document.querySelectorAll('.mahjong-tile-play').forEach(tile => tile.style.opacity = '1');
                 self.draggedTileId = null;
@@ -1268,25 +1267,56 @@ class CharlestonGame {
     }
 
     handleAllSelectedTilesDrop() {
-        const selectedTilesArray = this.gameState.getSelectedTilesArray();
+    const selectedTilesArray = this.gameState.getSelectedTilesArray();
+    
+    // For courtesy pass, allow 1-3 tiles; for regular pass, require exactly 3
+    if (this.gameState.isCourtesyPass) {
+        if (selectedTilesArray.length === 0 || selectedTilesArray.length > 3) {
+            MahjongUtils.showHint('Select 1-3 tiles for Courtesy Pass!');
+            return;
+        }
+    } else {
         if (selectedTilesArray.length !== 3) {
             MahjongUtils.showHint('Need exactly 3 tiles selected to pass!');
             return;
         }
-        
-        const dropZone = this.getDropZoneForDirection(this.gameState.currentDirection);
-        if (navigator.vibrate) navigator.vibrate(50);
-        MahjongUtils.playClick();
-        if (dropZone) {
-            dropZone.classList.add('snap');
-            setTimeout(() => dropZone.classList.remove('snap'), 200);
-        }
-
+    }
+    
+    const dropZone = this.getDropZoneForDirection(this.gameState.currentDirection);
+    if (navigator.vibrate) navigator.vibrate(50);
+    MahjongUtils.playClick();
+    if (dropZone) {
+        dropZone.classList.add('snap');
+        setTimeout(() => dropZone.classList.remove('snap'), 200);
+    }
+    
+if (this.gameState.isCourtesyPass) {
+    this.performCourtesyPass(selectedTilesArray);
+    this.uiRenderer.clearAllSelections();
+    this.gameState.clearSelectedTiles();
+    this.uiRenderer.hideCharlestonInfo();
+    
+    setTimeout(() => {
+        this.gameState.isCourtesyPass = false;
+        this.completeGame();
+    }, 500);
+    } else {
         this.performPass(selectedTilesArray);
         this.uiRenderer.clearAllSelections();
         this.gameState.clearSelectedTiles();
         this.nextPass();
     }
+}
+
+completeGame() {
+    // Disable all tile interactions
+    document.querySelectorAll('.mahjong-tile-play').forEach(tile => {
+        tile.draggable = false;
+        tile.style.pointerEvents = 'none';
+    });
+    
+    this.uiRenderer.showCharlestonInfo('Charleston practice complete!', 'New Game', () => this.newGame());
+}
 
     updateUI() {
         const selectedCount = this.gameState.getSelectedCount();
@@ -1301,9 +1331,8 @@ class CharlestonGame {
             this.gameState.currentDirection,
             this.gameState.isCourtesyPass
         );
-        const canSkip = (this.gameState.passNumber === 3 && this.gameState.charlestonRound === 1) ||
-                       (this.gameState.passNumber === 3 && this.gameState.charlestonRound === 2);
-        this.uiRenderer.updateButtons(selectedCount, blindPassAllowed, canSkip);
+        
+        this.uiRenderer.updateButtons(selectedCount, blindPassAllowed);
     }
 
     makeBlindPass() {
@@ -1396,7 +1425,55 @@ class CharlestonGame {
         const receiveText = this.gameState.getReceiveDirection().replace(/^\w/, c => c.toUpperCase());
         MahjongUtils.showHint(`Passed 3 tiles to ${this.gameState.currentDirection}, received 3 from ${receiveText}!`);
     }
-
+    
+    performCourtesyPass(tilesToPass) {
+    const numYouPassed = tilesToPass.length;
+    
+    // Remove your tiles
+    this.gameState.playerHands.you = HandManager.removeTilesFromHand(
+        this.gameState.playerHands.you, 
+        tilesToPass
+    );
+    
+    // Other players ALL pass the exact same number of tiles as you passed
+    const otherPlayersPasses = {};
+    ['right', 'across', 'left'].forEach(player => {
+        const hand = this.gameState.playerHands[player];
+        // Pass exactly numYouPassed tiles (0, 1, 2, or 3)
+        const pass = HandManager.getRandomTilesFromHand(hand, numYouPassed);
+        otherPlayersPasses[player] = pass;
+        this.gameState.playerHands[player] = HandManager.removeTilesFromHand(hand, pass);
+    });
+    
+    // You receive from across (should be same number you passed)
+    const tilesYouReceive = otherPlayersPasses['across'];
+    this.gameState.playerHands.you = HandManager.addTilesToHand(
+        this.gameState.playerHands.you,
+        tilesYouReceive
+    );
+    
+    // Distribute to other players (each receives from their across)
+    const allPasses = { you: tilesToPass, ...otherPlayersPasses };
+    
+    // Right receives from Left, Left receives from Right, Across receives from You
+    this.gameState.playerHands.right = HandManager.addTilesToHand(
+        this.gameState.playerHands.right,
+        allPasses.left
+    );
+    
+    this.gameState.playerHands.left = HandManager.addTilesToHand(
+        this.gameState.playerHands.left,
+        allPasses.right
+    );
+    
+    this.gameState.playerHands.across = HandManager.addTilesToHand(
+        this.gameState.playerHands.across,
+        allPasses.you
+    );
+    
+    this.renderAllHands();
+    MahjongUtils.showHint(`Courtesy pass complete! You passed ${tilesToPass.length}, received ${tilesYouReceive.length}.`);
+}
     getPlayerReceiveDirection(player) {
         const receiveMaps = {
             'right': { 'right': 'you', 'across': 'right', 'left': 'across' },
@@ -1436,14 +1513,6 @@ class CharlestonGame {
         MahjongUtils.showHint('Your hand has been sorted.');
     }
 
-    skipSecondPass() {
-        if (this.gameState.charlestonRound === 1) {
-            this.completeCharleston();
-        } else {
-            this.showCourtesyPass();
-        }
-    }
-
 completeCharleston() {
     const info = document.getElementById('charleston-info');
     const messageElement = document.getElementById('charleston-message');
@@ -1466,7 +1535,7 @@ completeCharleston() {
     const stopBtn = document.createElement('button');
     stopBtn.textContent = 'Stop Here';
     stopBtn.className = 'game-btn';
-    stopBtn.onclick = () => this.completeGame();
+    stopBtn.onclick = () => this.showCourtesyPass();
     info.appendChild(stopBtn);
     
     info.style.display = 'block';
@@ -1480,17 +1549,25 @@ completeCharleston() {
         this.updateUI();
     }
 
-    showCourtesyPass() {
-        this.gameState.isCourtesyPass = true;
-        this.gameState.currentDirection = 'across';
-        const message = 'Courtesy Pass: Offer 0-3 tiles to the player across.<br><br>For practice, you can select and drag tiles to pass, or complete the game.';
-        this.uiRenderer.showCharlestonInfo(message, 'Complete Game', () => this.completeGame());
-        this.updateUI();
-    }
+showCourtesyPass() {
+    this.gameState.isCourtesyPass = true;
+    this.gameState.currentDirection = 'across';
+    
+    const message = 'Courtesy Pass: Select 1-3 tiles and drag to pass across, or pass 0 tiles to end.';
+this.uiRenderer.showCharlestonInfo(message, 'Pass 0 Tiles & End', () => {
+    this.performCourtesyPass([]);
+    this.uiRenderer.clearAllSelections();
+    this.gameState.clearSelectedTiles();
+    this.uiRenderer.hideCharlestonInfo();
+    this.renderAllHands();
+    this.gameState.isCourtesyPass = false;
+    this.completeGame();
+});
+    
+    this.updateUI();
+    MahjongUtils.showHint('Courtesy Pass: Drag 1-3 tiles to pass, or click "Pass 0 Tiles & End"');
+}
 
-    completeGame() {
-        this.uiRenderer.showCharlestonInfo('Charleston practice complete!', 'New Game', () => this.newGame());
-    }
 
     newGame() {
         this.uiRenderer.hideCharlestonInfo();
@@ -1509,7 +1586,6 @@ completeCharleston() {
 
     setupEventListeners() {
         document.getElementById('blind-pass-btn')?.addEventListener('click', () => this.makeBlindPass());
-        document.getElementById('skip-btn')?.addEventListener('click', () => this.skipSecondPass());
         document.getElementById('help-btn')?.addEventListener('click', () => this.showHelp());
         // New button listeners
         document.getElementById('clear-selection-btn')?.addEventListener('click', () => this.clearSelection());
