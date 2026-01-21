@@ -151,11 +151,6 @@ Continue
 Blind Pass
 </button>
 
-<button onclick="charlestonGame.skipSecondPass()" class="game-btn" id="skip-btn" style="display: none;">
-
-Skip 2nd Charleston
-</button>
-
 <button onclick="charlestonGame.newGame()" class="game-btn">
 
 New Game
